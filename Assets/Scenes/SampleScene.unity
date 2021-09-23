@@ -223,6 +223,14 @@ MonoBehaviour:
   - {fileID: 4737860643849042038, guid: 1a5862d9e15f5f240a8c1d97a4f534da, type: 3}
   - {fileID: 4737860643849042038, guid: 0bbaeab645f827647ba9daeb6811b1f9, type: 3}
   moveAmount: 10
+  formerDirection: 0
+  direction: 0
+  roomType: 0
+  startTime: 0.25
+  minX: 5
+  maxX: 35
+  minY: 5
+  automaticGeneration: 0
 --- !u!4 &813625255
 Transform:
   m_ObjectHideFlags: 0
@@ -231,7 +239,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 813625253}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 34.701336, y: 21.867027, z: -10.792569}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

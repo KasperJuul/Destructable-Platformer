@@ -8,6 +8,6 @@ public class SpawnObject : MonoBehaviour
 
     private void Start()
     {
-        Instantiate(tile, transform.position, Quaternion.identity);
+        Instantiate(tile, transform.position, Quaternion.identity, transform.parent);
     }
 }
