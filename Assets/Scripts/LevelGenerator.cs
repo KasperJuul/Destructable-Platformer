@@ -72,105 +72,26 @@ public class LevelGenerator : MonoBehaviour
     {
         if (direction > 3) // MOVE RIGHT
         {
-            if (transform.position.x < maxX) 
-            {
-                Vector2 newPos = new Vector2(transform.position.x + moveAmount, transform.position.y);
-                transform.position = newPos;
-                formerDirection = direction;
-                direction = Random.Range(3, 6);
-                if (direction == 3)
-                {
-                    roomType = 1;
-                }
-            }
-            else // If Max x reached, go down
-            {
-                if (transform.position.y <= minY)
-                {
-                    stopGeneration = true;
-                    return;
-                }
-                Vector2 newPos = new Vector2(transform.position.x, transform.position.y - moveAmount);
-                transform.position = newPos;
-                formerDirection = direction;
-                direction = Random.Range(1, 4);
-                if (direction == 3)
-                {
-                    roomType = 3;
-                }
-                else
-                {
-                    roomType = 2;
-                }
-            }
+            Right();
+
         }
         else if (direction < 3) // MOVE LEFT
         {
-            if (transform.position.x > minX)
-            {
-                Vector2 newPos = new Vector2(transform.position.x - moveAmount, transform.position.y);
-                transform.position = newPos;
-                formerDirection = direction;
-                direction = Random.Range(1, 4);
-                if (direction == 3)
-                {
-                    roomType = 1;
-                }
-            }
-            else
-            {
-                if (transform.position.y <= minY)
-                {
-                    stopGeneration = true;
-                    return;
-                }
-                Vector2 newPos = new Vector2(transform.position.x, transform.position.y - moveAmount);
-                transform.position = newPos;
-                formerDirection = direction;
-                direction = Random.Range(3, 6);
-                if (direction == 3)
-                {
-                    roomType = 3;
-                }
-                else
-                {
-                    roomType = 2;
-                }
-            }
+            Left();
+
         }
         else if (direction == 3) // MOVE DOWN
         {
-            if (transform.position.y > minY)
-            {
-                Vector2 newPos = new Vector2(transform.position.x, transform.position.y - moveAmount);
-                transform.position = newPos;
-                if (formerDirection == 3)
-                {
-                    roomType = 3;
-                }
-                else
-                {
-                    roomType = 2;
-                }
-                formerDirection = direction;
-                direction = Random.Range(1, 6);
-            }
-            else
-            {
-                // STOP LEVEL GENERATION
-                stopGeneration = true;
-                return;
-            }
-        }
+            Down();
 
-        Instantiate(rooms[roomType], transform.position, Quaternion.identity);
-        if (direction == 3)
-        {
-            roomType = 2;
         }
-        else
+        if (transform.position.y < minY)
         {
-            roomType = 0;
+            stopGeneration = true;
+        }
+        else if(!stopGeneration)
+        {
+            Instantiate(rooms[roomType], transform.position, Quaternion.identity);
         }
     }
 
@@ -184,17 +105,66 @@ public class LevelGenerator : MonoBehaviour
             Vector2 newPos = new Vector2(transform.position.x + moveAmount, transform.position.y); // new position for next room;
             transform.position = newPos;
 
+
+
             CalcRoomType(formerDirection,direction);        // Get the type of room to be placed in the new position
         }
         else
         {
+            direction = 3;
+            Down();
+        }
+    }
+
+    public void Left()
+    {
+        if (transform.position.x > minX)
+        {
+            formerDirection = direction;        // save our current direction
+            direction = Random.Range(1, 4);     // get new direction
+
+            Vector2 newPos = new Vector2(transform.position.x - moveAmount, transform.position.y); // new position for next room;
+            transform.position = newPos;
+
+            if (newPos.x <= minX)
+            {
+                direction = 3;
+            }
+
+            CalcRoomType(formerDirection, direction);        // Get the type of room to be placed in the new position
+        }
+        else
+        {
+            direction = 3;
             Down();
         }
     }
 
     private void Down()
     {
-        
+        if (transform.position.y > minY)
+        {
+            formerDirection = direction;
+
+            Vector2 newPos = new Vector2(transform.position.x, transform.position.y - moveAmount);
+            transform.position = newPos;
+
+            if (newPos.x <= minX)
+            {
+                direction = Random.Range(3, 6);
+            }
+            else if (newPos.x >= maxX)
+            {
+                direction = Random.Range(1, 4);
+            }
+
+            CalcRoomType(formerDirection, direction);
+        }
+        else
+        {
+            // STOP LEVEL GENERATION
+            stopGeneration = true;
+        }
     }
 
     private void CalcRoomType(int formerDirection, int direction)
